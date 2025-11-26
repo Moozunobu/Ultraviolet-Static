@@ -1,122 +1,203 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-    />
-    <title>Ultraviolet | Sophisticated Web Proxy</title>
-    <meta
-      name="description"
-      content="Ultraviolet is a highly sophisticated proxy used for evading internet censorship or accessing websites in a controlled sandbox using the power of service-workers. Unblock sites today!"
-    />
-    <meta
-      name="keywords"
-      content="proxy, web proxy, ultraviolet, service workers, unblock websites, unblock chromebook, free web proxy, proxy list, proxy sites, un block chromebook, online proxy, proxy server, proxysite, proxy youtube, bypass securly, bypass iboss, bypass lightspeed filter, holy unblocker, chromebooks, titanium network, unblock youtube, youtube proxy, unblocked youtube, youtube unblocked"
-    />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#434c5e"
-    />
-    <meta name="googlebot" content="index, follow, snippet" />
-    <link rel="shortcut icon" content="favicon.ico" />
-    <link rel="stylesheet" href="index.css" />
-    <script src="baremux/index.js" defer></script>
-    <script src="epoxy/index.js" defer></script>
-    <script src="uv/uv.bundle.js" defer></script>
-    <script src="uv/uv.config.js" defer></script>
-    <script src="register-sw.js" defer></script>
-    <script src="search.js" defer></script>
-    <script src="index.js" defer></script>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What is Ultraviolet (Web Proxy)?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Highly sophisticated proxy used for evading internet censorship or accessing websites in a controlled sandbox using the power of service-workers and more!"
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How do I unblock sites using Ultraviolet?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Simply head to an official site featuring Ultraviolet such as Holy Unblocker or Incognito! You can also self-host Ultraviolet on your own web server for maximum privacy."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What if Ultraviolet is blocked or not working?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Join the Titanium Network Discord at discord.gg/unblock!"
-            }
-          }
-        ]
-      }
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dual Browser Pro (UV Mode)</title>
+    
+    <!-- ■■■ UVに必要なスクリプト（ここが重要） ■■■ -->
+    <script src="uv/uv.bundle.js"></script>
+    <script src="uv/uv.config.js"></script>
+    <!-- サービスワーカーの登録 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js', {
+                    scope: __uv$config.prefix
+                });
+            });
+        }
     </script>
-  </head>
+    <!-- ■■■ ここまで ■■■ -->
 
-  <body>
-    <div
-      title="Ultraviolet Logo"
-      class="flex-center logo-wrapper header-center"
-    >
-      <img class="logo" src="uv.png" alt="Ultraviolet" />
-      <h1>Ultraviolet | TN</h1>
-    </div>
-    <div class="flex-center desc left-margin">
-      <p>
-        Ultraviolet is highly sophisticated proxy used for evading internet
-        censorship.
-      </p>
+    <style>
+        /* あなたのCSSコード */
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: #F2F2F7; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .header { background-color: #fff; border-bottom: 1px solid #ccc; padding: 10px; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .toolbar { display: flex; gap: 8px; margin-bottom: 8px; }
+        .url-input-container { display: flex; flex-grow: 1; position: relative; }
+        #url-input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #ccc; background: #eee; outline: none; font-size: 16px; }
+        #url-input:focus { background: #fff; border-color: #007aff; }
+        .btn { border: none; border-radius: 8px; padding: 0 16px; font-weight: bold; cursor: pointer; color: white; white-space: nowrap; font-size: 14px; }
+        .btn-go { background-color: #007aff; }
+        .btn-split { background-color: #5856D6; }
+        .btn:active { opacity: 0.8; }
+        .hint-text { font-size: 11px; color: #ff3b30; margin-top: 4px; display: none; }
+        .tabs-wrapper { display: flex; align-items: center; overflow: hidden; margin-top: 5px; }
+        .tabs-scroll { display: flex; overflow-x: auto; gap: 5px; scrollbar-width: none; flex-grow: 1; }
+        .tabs-scroll::-webkit-scrollbar { display: none; }
+        .tab { background: #e5e5ea; padding: 8px 12px; border-radius: 8px 8px 0 0; font-size: 12px; display: flex; align-items: center; min-width: 100px; max-width: 160px; cursor: pointer; user-select: none; }
+        .tab.active { background: #fff; font-weight: bold; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+        .tab-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; }
+        .tab-close { width: 18px; text-align: center; border-radius: 50%; margin-left: 5px; color: #888; }
+        .tab-close:hover { background: #ccc; color: #000; }
+        .add-tab-btn { padding: 0 12px; font-size: 20px; color: #007aff; cursor: pointer; }
+        .content-area { flex-grow: 1; position: relative; background: #fff; display: flex; }
+        iframe { width: 100%; height: 100%; border: none; display: none; }
+        iframe.active { display: block; }
+        .content-area.split-mode iframe.active { width: 50%; border-right: 1px solid #ccc; }
+        iframe.split-secondary { display: block !important; width: 50%; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="toolbar">
+            <button class="btn btn-split" onclick="toggleSplit()">1画面/2画面</button>
+            <div class="url-input-container">
+                <input type="text" id="url-input" placeholder="検索ワード または URLを貼り付け">
+            </div>
+            <button class="btn btn-go" onclick="processInput()">開く</button>
+        </div>
+        <div class="hint-text" id="youtube-hint">💡 YouTubeリンクを検知！プロキシ経由で再生します</div>
+        <div class="tabs-wrapper">
+            <div class="tabs-scroll" id="tabs-list"></div>
+            <div class="add-tab-btn" onclick="createTab()">+</div>
+        </div>
     </div>
 
-    <form id="uv-form" class="flex-center">
-      <input
-        id="uv-search-engine"
-        value="https://www.google.com/search?q=%s"
-        type="hidden"
-      />
-      <input id="uv-address" type="text" placeholder="Search the web freely" />
-    </form>
-    <div class="desc left-margin">
-      <p id="uv-error"></p>
-      <pre id="uv-error-code"></pre>
-    </div>
-    <footer>
-      <div>
-        <a
-          title="The TitaniumNetwork GitHub organization"
-          href="https://github.com/titaniumnetwork-dev"
-          >TitaniumNetwork</a
-        >
-        <a title="The TitaniumNetwork Discord" href="https://discord.gg/unblock"
-          >Discord</a
-        >
-        <a
-          title="The TompHTTP GitHub organization"
-          href="https://github.com/tomphttp"
-          >TompHTTP</a
-        >
-        <a
-          title="The official deployment repository for Ultraviolet"
-          href="https://github.com/titaniumnetwork-dev/Ultraviolet-App"
-          >GitHub</a
-        >
-        <a title="License information" href="credits.html">Credits</a>
-      </div>
-      <div>
-        <span>Ultraviolet &copy; TN 2023</span>
-      </div>
-    </footer>
-    <iframe style="display: none;" id="uv-frame"></iframe>
-  </body>
+    <div class="content-area" id="frames-container"></div>
+
+    <script>
+        let tabs = [];
+        let activeTabId = null;
+        let tabCounter = 0;
+        let isSplit = false;
+
+        // ■■■ UV変換用の関数 ■■■
+        function uvUrl(url) {
+            // UVが読み込まれていない場合はそのまま返す
+            if (!window.__uv$config) return url;
+            return window.location.origin + window.__uv$config.prefix + window.__uv$config.encodeUrl(url);
+        }
+
+        window.onload = () => {
+            // Googleを開く（UV経由）
+            createTab('https://www.google.com', 'Google');
+        };
+
+        function processInput() {
+            const input = document.getElementById('url-input').value.trim();
+            if (!input) return;
+
+            // YouTubeリンク判定
+            if (input.includes('youtube.com') || input.includes('youtu.be')) {
+                showHint();
+                // リンクそのままでOK（UVが処理するからEmbedにする必要なし！）
+                createTab(input, 'YouTube');
+            } else {
+                if (!activeTabId) createTab();
+                let url = input;
+                if (!input.startsWith('http') && !input.includes('.')) {
+                    url = `https://www.google.com/search?q=${encodeURIComponent(input)}`;
+                } else if (!input.startsWith('http')) {
+                    url = 'https://' + input;
+                }
+                updateCurrentTab(url, input);
+            }
+        }
+
+        function showHint() {
+            const hint = document.getElementById('youtube-hint');
+            hint.style.display = 'block';
+            setTimeout(() => { hint.style.display = 'none'; }, 4000);
+        }
+
+        function createTab(url = '', title = '新規タブ') {
+            tabCounter++;
+            const tabId = `tab-${tabCounter}`;
+            
+            const tabEl = document.createElement('div');
+            tabEl.className = 'tab';
+            tabEl.id = `btn-${tabId}`;
+            tabEl.innerHTML = `<span class="tab-title">${title}</span><span class="tab-close" onclick="closeTab('${tabId}', event)">×</span>`;
+            tabEl.onclick = () => switchTab(tabId);
+            document.getElementById('tabs-list').appendChild(tabEl);
+
+            const iframe = document.createElement('iframe');
+            iframe.id = `frame-${tabId}`;
+            
+            // ■■■ ここでUV経由のURLに変換してセット ■■■
+            if (url) iframe.src = uvUrl(url);
+            
+            document.getElementById('frames-container').appendChild(iframe);
+            tabs.push({ id: tabId, url: url, title: title });
+            switchTab(tabId);
+        }
+
+        function updateCurrentTab(url, titleInput) {
+            if (!activeTabId) return;
+            const iframe = document.getElementById(`frame-${activeTabId}`);
+            
+            // ■■■ ここでもUV変換 ■■■
+            iframe.src = uvUrl(url);
+            
+            const tabData = tabs.find(t => t.id === activeTabId);
+            if(tabData) {
+                tabData.url = url;
+                tabData.title = titleInput;
+                document.querySelector(`#btn-${activeTabId} .tab-title`).innerText = titleInput;
+            }
+        }
+
+        function switchTab(tabId) {
+            activeTabId = tabId;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('iframe').forEach(i => {
+                i.classList.remove('active');
+                i.classList.remove('split-secondary');
+            });
+            document.getElementById(`btn-${tabId}`).classList.add('active');
+            document.getElementById(`frame-${tabId}`).classList.add('active');
+            const currentTab = tabs.find(t => t.id === tabId);
+            if (currentTab) document.getElementById('url-input').value = currentTab.url;
+
+            if (isSplit && tabs.length >= 2) {
+                const idx = tabs.findIndex(t => t.id === tabId);
+                const secondTab = tabs[idx + 1] || tabs[idx - 1];
+                if (secondTab) {
+                    document.getElementById(`frame-${secondTab.id}`).classList.add('split-secondary');
+                }
+            }
+        }
+
+        function closeTab(tabId, e) {
+            e.stopPropagation();
+            const idx = tabs.findIndex(t => t.id === tabId);
+            if (idx === -1) return;
+            document.getElementById(`btn-${tabId}`).remove();
+            document.getElementById(`frame-${tabId}`).remove();
+            tabs.splice(idx, 1);
+            if (tabs.length === 0) {
+                createTab('https://www.google.com', 'Google');
+            } else if (activeTabId === tabId) {
+                switchTab(tabs[tabs.length - 1].id);
+            } else {
+                if (isSplit) switchTab(activeTabId);
+            }
+        }
+
+        function toggleSplit() {
+            isSplit = !isSplit;
+            const container = document.getElementById('frames-container');
+            if (isSplit) container.classList.add('split-mode');
+            else container.classList.remove('split-mode');
+            if (activeTabId) switchTab(activeTabId);
+        }
+
+        document.getElementById('url-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') processInput();
+        });
+    </script>
+</body>
 </html>
